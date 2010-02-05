@@ -1,20 +1,24 @@
 <?php
 /**
- * @package ##PACKAGE##
- * @version ##VERSION##
+ *  @package ##PACKAGE##
+ *  @version ##VERSION##
  */
 /**
+ * Description of Validator NoRecord Exists
  * @package ##PACKAGE##
- */ 
+ * @author prskavecl
+ */
 class ZFCore_Validator_NoRecordExists extends Zend_Validate_Abstract
 {
     private $_table;
     private $_field;
 
     const OK = '';
+    const NOTOK = '';
 
     protected $_messageTemplates = array(
-        self::OK => "This '%value%' exists in database."
+        self::OK => "This '%value%' exists in database.",
+        self::NOTOK => "This '%value%' not exists in database."
     );
 
     public function __construct($table, $field) {
@@ -35,7 +39,7 @@ class ZFCore_Validator_NoRecordExists extends Zend_Validate_Abstract
         $funcName = 'findBy' . $this->_field;
 
         if(count($this->_table->$funcName($value))>0) {
-            $this->_error();
+            $this->_error(self::NOTOK);
             return false;
         }
 
