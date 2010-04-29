@@ -23,27 +23,26 @@ class ZFCore_Controller_Plugin_Ssl extends Zend_Controller_Plugin_Abstract
                 $shouldSecureUrl = false;
                 $bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
                 $this->options = $bootstrap->getOption('modules');
-
-                if (APPLICATION_ENVIRONMENT == ENV_PRODUCTION ) {
-
+                //if (APPLICATION_ENV == 'production' ) {
+		
                         //check configuration file for one of three require_ssl directives
                         //secure an entire module with modules.module_name.require_ssl = true
                         //secure an entire controller with modules.module_name.controller_name.require_ssl = true
                         //secure an action with modules.module_name.controller_name.action_name.require_ssl = true
-                        if ($this->options['modules'][$request->module]['require_ssl'] ||
-                                        $this->options['modules'][$request->module][$request->controller]['require_ssl'] ||
-                                        $this->options['modules'][$request->module][$request->controller][$request->action]['require_ssl'] ){
+                        if ($this->options[$request->module]['require_ssl']==1 ||
+                                        $this->options[$request->module][$request->controller]['require_ssl']==1 ||
+                                        $this->options[$request->module][$request->controller][$request->action]['require_ssl']==1 ) {
 
                                 $shouldSecureUrl = true;
 
                         }
-
+					    
                         if ($shouldSecureUrl)   {
 
                                 $this->_secureUrl($request);
 
                         }
-                }
+                //}
         }
 
         /**
@@ -56,10 +55,9 @@ class ZFCore_Controller_Plugin_Ssl extends Zend_Controller_Plugin_Abstract
          */
         protected function _secureUrl( Zend_Controller_Request_Abstract $request)
 		{
-
+	
                 $server = $request->getServer();
                 $hostname = $server['HTTP_HOST'];
-
                 if (!$request->isSecure()) {
                         //url scheme is not secure so we rebuild url with secureScheme
                         $url = Zend_Controller_Request_Http::SCHEME_HTTPS . "://" . $hostname . $request->getPathInfo();
