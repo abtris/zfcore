@@ -75,7 +75,10 @@ class ZFCore_DoctrineForm extends Zend_Form
         //Zend_Debug::dump($this->_table->getFieldNames());
         $this->_getForm();
     }
-
+    /**
+     * Return all columns
+     * @return array
+     */
     protected function _getColumns()
     {
         $columns = array();
@@ -108,6 +111,9 @@ class ZFCore_DoctrineForm extends Zend_Form
 
         return $relations;
     }
+    /**
+     * Get Form
+     */
     protected function _getForm()
     {
         //Zend_Debug::dump($this->_getColumns());
@@ -118,7 +124,8 @@ class ZFCore_DoctrineForm extends Zend_Form
     /**
      * Parses columns to fields
      */
-    protected function _columnsToFields() {
+    protected function _columnsToFields()
+    {
         foreach($this->_getColumns() as $name => $definition) {
             $type = $this->_columnTypes[$definition['type']];
             if(isset($this->_fieldTypes[$name]))
@@ -150,7 +157,8 @@ class ZFCore_DoctrineForm extends Zend_Form
     /**
      * Parses relations to fields
      */
-    protected function _relationsToFields() {
+    protected function _relationsToFields()
+    {
         foreach($this->_getRelations() as $alias => $relation) {
             $field = null;
 
